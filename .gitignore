@@ -43,5 +43,6 @@ Thumbs.db
 # intermediate files #
 ###################
 intermediate/
+results/
 
 
