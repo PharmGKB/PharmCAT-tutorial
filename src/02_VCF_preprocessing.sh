@@ -15,7 +15,7 @@ pip3 install -r preprocessor/PharmCAT_VCF_Preprocess_py3_requirements.txt
 
 # input VCFs
 # remove the header that says "##ALT=<NON_REF>...", a visage of gVCF
-TUTORIAL_VCF=PharmCAT_tutorial_get-rm_wgs_30x_grch38.vcf.gz
+TUTORIAL_VCF=data/PharmCAT_tutorial_get-rm_wgs_30x_grch38.vcf.gz
 
 # reference materials
 REF_PGX_VCF=preprocessor/pharmcat_positions.vcf.bgz
