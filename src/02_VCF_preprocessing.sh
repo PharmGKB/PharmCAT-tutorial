@@ -12,12 +12,7 @@ tar -xvf pharmcat-preprocessor-1.5.1.tar.gz
 VCF_PREPROCESS_SCRIPT=preprocessor/PharmCAT_VCF_Preprocess.py
 # install the required python libraries
 pip3 install -r preprocessor/PharmCAT_VCF_Preprocess_py3_requirements.txt
-
-# input VCFs
-# remove the header that says "##ALT=<NON_REF>...", a visage of gVCF
-TUTORIAL_VCF=data/PharmCAT_tutorial_get-rm_wgs_30x_grch38.vcf.gz
-
-# reference materials
+# reference PGx positions used by the PharmCAT
 REF_PGX_VCF=preprocessor/pharmcat_positions.vcf.bgz
 
 # outputs
@@ -26,12 +21,39 @@ PHARMCAT_READY_PREFIX=pharmcat_ready
 mkdir -p "$PREPROCESSED_DIR"
 
 ######################################################
-# Preprocess VCFs
+# Preprocess VCFs - single-sample VCFs
 ######################################################
+for SINGLE_VCF in $(cat data/single_sample_vcf_list.txt)
+do
+    # run the PharmCAT VCF preprocessor
+    python3 "$VCF_PREPROCESS_SCRIPT" \
+      --input_vcf "$SINGLE_VCF" \
+      --ref_pgx_vcf "$REF_PGX_VCF" \
+      --output_folder "$PREPROCESSED_DIR" \
+      --output_prefix "$PHARMCAT_READY_PREFIX"
+done
+
+######################################################
+# Preprocess VCFs - multi-sample VCF
+######################################################
+# input multi-sample VCF
+TUTORIAL_VCF=data/PharmCAT_tutorial_get-rm_wgs_30x_grch38.vcf.gz
+# run the PharmCAT VCF preprocessor
 python3 "$VCF_PREPROCESS_SCRIPT" \
---input_vcf "$TUTORIAL_VCF" \
---ref_pgx_vcf "$REF_PGX_VCF" \
---output_folder "$PREPROCESSED_DIR" \
---output_prefix "$PHARMCAT_READY_PREFIX"
+  --input_vcf "$TUTORIAL_VCF" \
+  --ref_pgx_vcf "$REF_PGX_VCF" \
+  --output_folder "$PREPROCESSED_DIR" \
+  --output_prefix "$PHARMCAT_READY_PREFIX"
+
+
+######################################################
+# Preprocess VCFs - multiple VCFs divided by chromosomes or into genetic blocks
+######################################################
+INPUT_VCF_LIST=data/input_vcf_list.txt
+python3 "$VCF_PREPROCESS_SCRIPT" \
+  --input_list "$INPUT_VCF_LIST" \
+  --ref_pgx_vcf "$REF_PGX_VCF" \
+  --output_folder "$PREPROCESSED_DIR" \
+  --output_prefix "$PHARMCAT_READY_PREFIX"
 
 

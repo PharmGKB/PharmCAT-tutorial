@@ -14,9 +14,9 @@
 ############################################
 ## Load necessary libraries and scripts
 ############################################
-library(rjson)
-library(optparse)
-library(tidyverse)
+if (!require(rjson, quietly=T)) {install.packages('rjson'); library(rjson)}
+if (!require(optparse, quietly=T)) {install.packages('optparse'); library(optparse)}
+if (!require(tidyverse, quietly=T)) {install.packages('tidyverse'); library(tidyverse)}
 
 # read external parameters
 opt_list <- list(
@@ -52,7 +52,7 @@ write.table(headers, file = paste0(output_dir, output_prefix, ".txt"), sep = "\t
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 # read result json files one by one
-for (single_file in input_file_list[1:10]){
+for (single_file in input_file_list){
   summary_results <- data.frame()
   sample_id <- unlist(strsplit(single_file, split = "[.]"))[2]
   
@@ -183,7 +183,7 @@ for (single_file in input_file_list[1:10]){
                                       diplotype = cyp2c9_poi_genotypes, hap_1 = "NULL", hap_2 = "NULL",
                                       hap_1_variants = "NULL", hap_2_variants = "NULL", 
                                       missing_positions = "94645745")
-      if(cyp2c9_poi_calls != "NULL"){
+      if(cyp2c9_poi_genotypes != "NULL"){
         poi_hap_1 <- unlist(strsplit(cyp2c9_poi_genotypes, c("[/|//]")))[1]
         poi_hap_2 <- unlist(strsplit(cyp2c9_poi_genotypes, c("[/|//]")))[2]
         cyp2c9_poi_result$hap_1 <- paste0("rs12777823_", poi_hap_1)

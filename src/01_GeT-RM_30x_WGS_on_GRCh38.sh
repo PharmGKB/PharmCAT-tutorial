@@ -5,7 +5,7 @@
 
 # work under the current tutorial directory
 PROJECT_DIR="$PWD"
-RAW_VCF_DIR="$PROJECT_DIR"raw_vcf/
+RAW_VCF_DIR="$PROJECT_DIR"/raw_vcf/
 cd "$PROJECT_DIR"
 
 # path to the tutorial GeT-RM sample list

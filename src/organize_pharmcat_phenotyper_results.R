@@ -14,9 +14,9 @@
 ############################################
 ## Load necessary libraries and scripts
 ############################################
-library(rjson)
-library(optparse)
-library(tidyverse)
+if (!require(rjson, quietly=T)) {install.packages('rjson'); library(rjson)}
+if (!require(optparse, quietly=T)) {install.packages('optparse'); library(optparse)}
+if (!require(tidyverse, quietly=T)) {install.packages('tidyverse'); library(tidyverse)}
 
 # read external parameters
 opt_list <- list(
@@ -46,7 +46,7 @@ input_file_list <- list.files(path = input_dir, pattern = input_file_pattern, fu
 ## Organize results
 ############################################
 # print headers
-headers <- paste(c("samples", "gene", "phenotype", "hap_1_phenotyper", "hap_2_phenotyper", "hap_1", "hap_2", "hap_1_function", "hap_2_function"), collapse = "\t")
+headers <- paste(c("samples", "gene", "phenotype", "hap_1", "hap_2", "hap_1_function", "hap_2_function"), collapse = "\t")
 write.table(headers, file = paste0(output_dir, output_prefix, ".txt"), sep = "\t",
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
@@ -64,15 +64,13 @@ for (single_file in input_file_list){
         sample_id = sample_id,
         gene = .$geneSymbol,
         phenotype = .$diplotypes %>% map_chr(., "phenotype", .default = "NULL"),
-        hap_1_phenotyper = .$diplotypes %>% map_chr(., c("allele1", "name"), .default = "NULL"),
-        hap_2_phenotyper = .$diplotypes %>% map_chr(., c("allele2", "name"), .default = "NULL"),
-        hap_1 = .$matcherDiplotypes %>% map_chr(., c("allele1", "name"), .default = "NULL"),
-        hap_2 = .$matcherDiplotypes %>% map_chr(., c("allele2", "name"), .default = "NULL"),
+        hap_1 = .$diplotypes %>% map_chr(., c("allele1", "name"), .default = "NULL"),
+        hap_2 = .$diplotypes %>% map_chr(., c("allele2", "name"), .default = "NULL"),
         hap_1_function = .$diplotypes %>% map_chr(., c("allele1", "function"), .default = "NULL"),
         hap_2_function = .$diplotypes %>% map_chr(., c("allele2", "function"), .default = "NULL")
       )
     }
-    single_gene_results <- single_gene_results %>% 
+    single_gene_results <- single_gene_results %>%
       mutate(hap_1 = recode(hap_1, Unknown = "NULL"),
              hap_2 = recode(hap_2, Unknown = "NULL"))
     # combine single-gene results

@@ -1,0 +1,3 @@
+data/PharmCAT_tutorial_get-rm_wgs_30x_grch38.NA18526.vcf.gz
+data/PharmCAT_tutorial_get-rm_wgs_30x_grch38.NA18565.vcf.gz
+data/PharmCAT_tutorial_get-rm_wgs_30x_grch38.NA18861.vcf.gz

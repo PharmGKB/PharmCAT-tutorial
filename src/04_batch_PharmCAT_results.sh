@@ -11,7 +11,7 @@ cd "$PROJECT_DIR"
 ###############################
 SCRIPT_PATH=src/organize_pharmcat_named_allele_matcher_results.R
 
-MATCHER_DIR="$PROJECT_DIR"results/pharmcat_matcher/
+MATCHER_DIR=results/pharmcat_matcher/
 MATCHER_PATTERN=pharmcat_named_allele_matcher.*json
 
 Rscript  "$SCRIPT_PATH"\
@@ -24,7 +24,7 @@ Rscript  "$SCRIPT_PATH"\
 ###############################
 SCRIPT_PATH=src/organize_pharmcat_phenotyper_results.R
 
-PHENOTYPER_DIR="$PROJECT_DIR"results/pharmcat_phenotyper/
+PHENOTYPER_DIR=results/pharmcat_phenotyper/
 PHENOTYPER_PATTERN=pharmcat_phenotyper.*json
 
 Rscript  "$SCRIPT_PATH" \
