@@ -14,9 +14,9 @@ SCRIPT_PATH=src/organize_pharmcat_named_allele_matcher_results.R
 MATCHER_DIR=results/pharmcat_matcher/
 MATCHER_PATTERN=pharmcat_named_allele_matcher.*json
 
-Rscript  "$SCRIPT_PATH"\
+echo Rscript  "$SCRIPT_PATH"\
   --input-dir "$MATCHER_DIR" \
-  --input-file-pattern "$MATCHER_PREFIX" \
+  --input-file-pattern "$MATCHER_PATTERN" \
   --output-dir "$PROJECT_DIR"
 
 ###############################
