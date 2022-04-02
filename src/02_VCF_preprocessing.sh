@@ -6,9 +6,9 @@
 PROJECT_DIR="$PWD"
 cd "$PROJECT_DIR"
 
-# get VCF preprocessor script
-wget https://github.com/PharmGKB/PharmCAT/releases/download/v1.5.1/pharmcat-preprocessor-1.5.1.tar.gz
-tar -xvf pharmcat-preprocessor-1.5.1.tar.gz
+# get the latest VCF preprocessor script
+wget https://github.com/PharmGKB/PharmCAT/releases/download/v1.6.0/pharmcat-preprocessor-1.6.0.tar.gz
+tar -xvf pharmcat-preprocessor-1.6.0.tar.gz
 VCF_PREPROCESS_SCRIPT=preprocessor/PharmCAT_VCF_Preprocess.py
 # install the required python libraries
 pip3 install -r preprocessor/PharmCAT_VCF_Preprocess_py3_requirements.txt
