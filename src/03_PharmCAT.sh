@@ -40,6 +40,7 @@ for SINGLE_SAMPLE in $(cat "$TEST_SAMPLES")
 do
   java -jar "$PHARMCAT_JAR" \
   -vcf "$PREPROCESSED_DIR""$PHARMCAT_READY_PREFIX"."$SINGLE_SAMPLE".vcf \
+  -a data/outside_calls_from_get-rm."$SINGLE_SAMPLE".txt \
   -o "$PHARMCAT_ALL_DIR" \
   -f "$PHARMCAT_PREFIX"."$SINGLE_SAMPLE" \
   -k -pj -j
@@ -63,6 +64,7 @@ for SINGLE_SAMPLE in $(cat "$TEST_SAMPLES")
 do
   java -cp "$PHARMCAT_JAR" org.pharmgkb.pharmcat.phenotype.Phenotyper \
       -c "$MATCHER_DIR""$MATCHER_PREFIX"."$SINGLE_SAMPLE".json \
+      -o data/outside_calls_from_get-rm."$SINGLE_SAMPLE".txt \
       -f "$PHENOTYPER_DIR""$PHENOTYPER_PREFIX"."$SINGLE_SAMPLE".json
 done
 
@@ -71,6 +73,7 @@ for SINGLE_SAMPLE in $(cat "$TEST_SAMPLES")
 do
   java -cp "$PHARMCAT_JAR" org.pharmgkb.pharmcat.phenotype.Phenotyper \
       -vcf "$PREPROCESSED_DIR""$PHARMCAT_READY_PREFIX"."$SINGLE_SAMPLE".vcf \
+      -o data/outside_calls_from_get-rm."$SINGLE_SAMPLE".txt \
       -f "$PHENOTYPER_DIR""$PHENOTYPER_PREFIX"."$SINGLE_SAMPLE".json
 done
 
