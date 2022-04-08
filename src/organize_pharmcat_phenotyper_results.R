@@ -47,7 +47,7 @@ input_file_list <- list.files(path = input_dir, pattern = input_file_pattern, fu
 ############################################
 # print headers
 headers <- paste(c("samples", "gene", "phenotype", "hap_1", "hap_2", "hap_1_function", "hap_2_function"), collapse = "\t")
-write.table(headers, file = paste0(output_dir, output_prefix, ".txt"), sep = "\t",
+write.table(headers, file = paste0(output_dir, output_prefix, ".tsv"), sep = "\t",
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 # exhaustively read result json files
