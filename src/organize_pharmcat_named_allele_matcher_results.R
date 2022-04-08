@@ -200,7 +200,7 @@ for (single_file in input_file_list){
   # fill in no calls / no results
   summary_results <- summary_results %>%  replace(is.na(.), "NULL")
   # write to output
-  write.table(summary_results, file = paste0(output_dir, output_prefix, ".txt"), sep = "\t",
+  write.table(summary_results, file = paste0(output_dir, output_prefix, ".tsv"), sep = "\t",
               quote = FALSE, row.names = FALSE, col.names = FALSE, append = TRUE)
 }
 
