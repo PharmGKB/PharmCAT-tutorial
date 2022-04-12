@@ -11,7 +11,6 @@ Please cite:
 
 ## Pre-requisite
 - bcftools >= 1.15
-- tabix >= 1.15
 - bgzip >= 1.15
 - python3
 
