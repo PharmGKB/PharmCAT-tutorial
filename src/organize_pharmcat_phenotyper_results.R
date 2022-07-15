@@ -21,7 +21,7 @@ if (!require(tidyverse, quietly=T)) {install.packages('tidyverse'); library(tidy
 # read external parameters
 opt_list <- list(
   make_option("--input-dir", type="character", default = getwd(), help="Input file directory, default = current working directory"),
-  make_option("--input-file-pattern", type="character", default="pharmcat_phenotyper*json", help="Pattern of the input file"),
+  make_option("--input-file-pattern", type="character", default="*json", help="Pattern of the input file"),
   make_option("--output-dir", type="character", default= getwd(), help="Output directory"),
   make_option("--prefix-output-file", type="character", default="PharmCAT_Phenotyper_results", help="prefix of the output file")
 )
@@ -53,7 +53,8 @@ write.table(headers, file = paste0(output_dir, output_prefix, ".tsv"), sep = "\t
 # exhaustively read result json files
 for (single_file in input_file_list){
   summary_results <- data.frame()
-  sample_id <- unlist(strsplit(single_file, split = "[.]"))[2]
+  single_file_name_fields <- unlist(strsplit(basename(single_file), split = "[.]"))
+  sample_id <- single_file_name_fields[length(single_file_name_fields) - 3]
   
   # read in json
   single_file_data <- fromJSON(file = single_file)
@@ -82,5 +83,6 @@ for (single_file in input_file_list){
   write.table(summary_results, file = paste0(output_dir, output_prefix, ".tsv"), sep = "\t",
               quote = FALSE, row.names = FALSE, col.names = FALSE, append = TRUE)
 }
-
+# alarm of the output file
+print(paste("Writing the TSV output to ", paste0(output_dir, output_prefix, ".tsv"), sep = ""))
 

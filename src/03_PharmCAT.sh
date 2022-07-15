@@ -7,31 +7,23 @@ PROJECT_DIR="$PWD"
 cd "$PROJECT_DIR"
 
 # download pharmcat
-wget https://github.com/PharmGKB/PharmCAT/releases/download/v1.6.0/pharmcat-1.6.0-all.jar
-PHARMCAT_JAR=pharmcat-1.6.0-all.jar
+PHARMCAT_JAR=pharmcat-latest-version-all.jar
 
 # reference materials
-TEST_SAMPLES=data/test_get-rm_samples.txt
+TEST_SAMPLES="$PROJECT_DIR"/data/test_get-rm_samples.txt
 # one way to generate such a list of samples is via bcftools
-bcftools query -l data/PharmCAT_tutorial_get-rm_wgs_30x_grch38.vcf.gz > "$TEST_SAMPLES"
+bcftools query -l "$PROJECT_DIR"/data/PharmCAT_tutorial_get-rm_wgs_30x_grch38.vcf.gz > "$TEST_SAMPLES"
 
 # input VCFs
-PREPROCESSED_DIR=results/pharmcat_ready/
-PHARMCAT_READY_PREFIX=pharmcat_ready
+PREPROCESSED_DIR="$PROJECT_DIR"/results/pharmcat_ready/
 
 # outputs directories
-PHARMCAT_ALL_DIR=results/pharmcat_all/
-MATCHER_DIR=results/pharmcat_matcher/
-PHENOTYPER_DIR=results/pharmcat_phenotyper/
-REPORTER_DIR=results/pharmcat_reporter/
-mkdir -p "$PHARMCAT_ALL_DIR" "$MATCHER_DIR" "$PHENOTYPER_DIR" "$REPORTER_DIR"
-
-# output prefix
-PHARMCAT_PREFIX=pharmcat
-MATCHER_PREFIX=pharmcat_named_allele_matcher
-PHENOTYPER_PREFIX=pharmcat_phenotyper
-REPORTER_PREFIX=pharmcat_reporter
-
+PHARMCAT_ALL_DIR="$PROJECT_DIR"/results/pharmcat_all/
+MATCHER_DIR="$PROJECT_DIR"/results/pharmcat_matcher/
+PHENOTYPER_DIR="$PROJECT_DIR"/results/pharmcat_phenotyper/
+REPORTER_DIR="$PROJECT_DIR"/results/pharmcat_reporter/
+RESEARCH_DIR="$PROJECT_DIR"/results/pharmcat_for_research/
+mkdir -p "$PHARMCAT_ALL_DIR" "$MATCHER_DIR" "$PHENOTYPER_DIR" "$REPORTER_DIR" "$RESEARCH_DIR"
 
 ######################################################
 # PharmCAT - whole
@@ -39,11 +31,9 @@ REPORTER_PREFIX=pharmcat_reporter
 for SINGLE_SAMPLE in $(cat "$TEST_SAMPLES")
 do
   java -jar "$PHARMCAT_JAR" \
-  -vcf "$PREPROCESSED_DIR""$PHARMCAT_READY_PREFIX"."$SINGLE_SAMPLE".vcf \
-  -a data/outside_calls_from_get-rm."$SINGLE_SAMPLE".txt \
-  -o "$PHARMCAT_ALL_DIR" \
-  -f "$PHARMCAT_PREFIX"."$SINGLE_SAMPLE" \
-  -k -pj -j
+  -vcf "$PREPROCESSED_DIR""$SINGLE_SAMPLE".preprocessed.vcf \
+  -po data/outside_calls_from_get-rm."$SINGLE_SAMPLE".txt \
+  -o "$PHARMCAT_ALL_DIR"
 done
 
 ######################################################
@@ -51,9 +41,9 @@ done
 ######################################################
 for SINGLE_SAMPLE in $(cat "$TEST_SAMPLES")
 do
-  java -cp "$PHARMCAT_JAR" org.pharmgkb.pharmcat.haplotype.NamedAlleleMatcher \
-      -vcf "$PREPROCESSED_DIR""$PHARMCAT_READY_PREFIX"."$SINGLE_SAMPLE".vcf \
-      -json "$MATCHER_DIR""$MATCHER_PREFIX"."$SINGLE_SAMPLE".json
+  java -jar "$PHARMCAT_JAR" -matcher -matcherHtml \
+      -vcf "$PREPROCESSED_DIR""$SINGLE_SAMPLE".preprocessed.vcf \
+      -o "$MATCHER_DIR"
 done
 
 ######################################################
@@ -62,19 +52,19 @@ done
 # use the JSON data from the Named Allele Matcher
 for SINGLE_SAMPLE in $(cat "$TEST_SAMPLES")
 do
-  java -cp "$PHARMCAT_JAR" org.pharmgkb.pharmcat.phenotype.Phenotyper \
-      -c "$MATCHER_DIR""$MATCHER_PREFIX"."$SINGLE_SAMPLE".json \
-      -o data/outside_calls_from_get-rm."$SINGLE_SAMPLE".txt \
-      -f "$PHENOTYPER_DIR""$PHENOTYPER_PREFIX"."$SINGLE_SAMPLE".json
+  java -jar "$PHARMCAT_JAR" -phenotyper \
+      -pi "$MATCHER_DIR""$SINGLE_SAMPLE".preprocessed.match.json \
+      -po data/outside_calls_from_get-rm."$SINGLE_SAMPLE".txt \
+      -o "$PHENOTYPER_DIR"
 done
 
 # use VCF
 for SINGLE_SAMPLE in $(cat "$TEST_SAMPLES")
 do
-  java -cp "$PHARMCAT_JAR" org.pharmgkb.pharmcat.phenotype.Phenotyper \
-      -vcf "$PREPROCESSED_DIR""$PHARMCAT_READY_PREFIX"."$SINGLE_SAMPLE".vcf \
-      -o data/outside_calls_from_get-rm."$SINGLE_SAMPLE".txt \
-      -f "$PHENOTYPER_DIR""$PHENOTYPER_PREFIX"."$SINGLE_SAMPLE".json
+  java -jar "$PHARMCAT_JAR" -matcher -phenotyper \
+      -vcf "$PREPROCESSED_DIR""$SINGLE_SAMPLE".preprocessed.vcf \
+      -po data/outside_calls_from_get-rm."$SINGLE_SAMPLE".txt \
+      -o "$PHENOTYPER_DIR"
 done
 
 ######################################################
@@ -82,9 +72,33 @@ done
 ######################################################
 for SINGLE_SAMPLE in $(cat "$TEST_SAMPLES")
 do
-  java -cp "$PHARMCAT_JAR" org.pharmgkb.pharmcat.reporter.Reporter \
-      -p "$PHENOTYPER_DIR""$PHENOTYPER_PREFIX"."$SINGLE_SAMPLE".json \
-      -o "$REPORTER_DIR""$REPORTER_PREFIX"."$SINGLE_SAMPLE".html \
-      -j "$REPORTER_DIR""$REPORTER_PREFIX"."$SINGLE_SAMPLE".json \
-      -t 'Report for '"$SINGLE_SAMPLE"
+  java -jar "$PHARMCAT_JAR" -reporter \
+      -ri "$PHENOTYPER_DIR""$SINGLE_SAMPLE".preprocessed.phenotype.json \
+      -o "$REPORTER_DIR" \
+      -rt 'Report for '"$SINGLE_SAMPLE"
 done
+
+######################################################
+# PharmCAT - Combination or Partial Alleles
+######################################################
+for SINGLE_SAMPLE in $(cat "$TEST_SAMPLES")
+do
+  java -jar "$PHARMCAT_JAR" \
+  -research combinations \
+  -vcf "$PREPROCESSED_DIR""$SINGLE_SAMPLE".preprocessed.vcf \
+  -o "$RESEARCH_DIR" \
+  -bf "$SINGLE_SAMPLE".combinations
+done
+
+######################################################
+# PharmCAT - CYP2D6
+######################################################
+for SINGLE_SAMPLE in $(cat "$TEST_SAMPLES")
+do
+  java -jar "$PHARMCAT_JAR" \
+  -research cyp2d6 \
+  -vcf "$PREPROCESSED_DIR""$SINGLE_SAMPLE".preprocessed.vcf \
+  -o "$RESEARCH_DIR" \
+  -bf "$SINGLE_SAMPLE".cyp2d6
+done
+

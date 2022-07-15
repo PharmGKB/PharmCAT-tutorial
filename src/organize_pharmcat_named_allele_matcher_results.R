@@ -21,9 +21,9 @@ if (!require(tidyverse, quietly=T)) {install.packages('tidyverse'); library(tidy
 # read external parameters
 opt_list <- list(
   make_option("--input-dir", type="character", default = getwd(), help="Full path to the input file directory"),
-  make_option("--input-file-pattern", type="character", default="pharmcat_named_allele_matcher*json", help="Pattern of the input file"),
+  make_option("--input-file-pattern", type="character", default="*json", help="Pattern of the input file"),
   make_option("--output-dir", type="character", default= getwd(), help="Output directory"),
-  make_option("--prefix-output-file", type="character", default="PharmCAT_NamedAlleleMatcher_results", help="prefix of the output file")
+  make_option("--prefix-output-file", type="character", default="PharmCAT_Matcher_results", help="prefix of the output file")
 )
 opts <- parse_args(OptionParser(option_list=opt_list))
 # parse values
@@ -54,7 +54,8 @@ write.table(headers, file = paste0(output_dir, output_prefix, ".tsv"), sep = "\t
 # read result json files one by one
 for (single_file in input_file_list){
   summary_results <- data.frame()
-  sample_id <- unlist(strsplit(single_file, split = "[.]"))[2]
+  single_file_name_fields <- unlist(strsplit(basename(single_file), split = "[.]"))
+  sample_id <- single_file_name_fields[length(single_file_name_fields) - 3]
   
   # read in json
   single_file_data <- fromJSON(file = single_file)
@@ -203,5 +204,6 @@ for (single_file in input_file_list){
   write.table(summary_results, file = paste0(output_dir, output_prefix, ".tsv"), sep = "\t",
               quote = FALSE, row.names = FALSE, col.names = FALSE, append = TRUE)
 }
-
+# alarm of the output file
+print(paste("Writing the TSV output to ", paste0(output_dir, output_prefix, ".tsv"), sep = ""))
 
