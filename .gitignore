@@ -45,6 +45,7 @@ Thumbs.db
 ###################
 intermediate/
 results/
+preprocessor/
 data/*csi
 data/*gz
 
