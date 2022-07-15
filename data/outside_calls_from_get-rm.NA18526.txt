@@ -1,2 +1,2 @@
 CYP2D6	*1/*36x2+*10
-#G6PD    Not available
+G6PD		Not available

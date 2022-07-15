@@ -8,3 +8,4 @@ data/PharmCAT_tutorial_get-rm_wgs_30x_grch38_chr12.vcf.gz
 data/PharmCAT_tutorial_get-rm_wgs_30x_grch38_chr13.vcf.gz
 data/PharmCAT_tutorial_get-rm_wgs_30x_grch38_chr16.vcf.gz
 data/PharmCAT_tutorial_get-rm_wgs_30x_grch38_chr19.vcf.gz
+data/PharmCAT_tutorial_get-rm_wgs_30x_grch38_chr22.vcf.gz
