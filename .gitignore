@@ -22,6 +22,7 @@
 *.rar
 *.tar
 *.zip
+*.tsv
 
 # Logs and databases #
 ######################
@@ -44,5 +45,7 @@ Thumbs.db
 ###################
 intermediate/
 results/
+data/*csi
+data/*gz
 
 
