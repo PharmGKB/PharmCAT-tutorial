@@ -31,10 +31,10 @@ for CHR in "${CHR_LIST[@]}"; do
    -no-version \
    -i 'FILTER="PASS"' \
    -Oz \
-   -o "$RAW_VCF_DIR"20201028_CCDG_14151_B01_GRM_WGS_2020-08-05_chr"$CHR".recalibrated_variants.get-rm.vcf.gz \
+   -o "$RAW_VCF_DIR"20201028_CCDG_14151_B01_GRM_WGS_2020-08-05_chr"$CHR".recalibrated_variants.get-rm.vcf.bgz \
    "$RAW_VCF_DIR"20201028_CCDG_14151_B01_GRM_WGS_2020-08-05_chr"$CHR".recalibrated_variants.vcf.gz
 
-   echo "$RAW_VCF_DIR"20201028_CCDG_14151_B01_GRM_WGS_2020-08-05_chr"$CHR".recalibrated_variants.get-rm.vcf.gz \
+   echo "$RAW_VCF_DIR"20201028_CCDG_14151_B01_GRM_WGS_2020-08-05_chr"$CHR".recalibrated_variants.get-rm.vcf.bgz \
     >> "$TO_BE_CONCAT_FILE_LIST"
 done
 
