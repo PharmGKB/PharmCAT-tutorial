@@ -35,7 +35,7 @@ done
 # Preprocess VCFs - multi-sample VCF
 ######################################################
 # input multi-sample VCF
-TUTORIAL_VCF=data/PharmCAT_tutorial_get-rm_wgs_30x_grch38.vcf.gz
+TUTORIAL_VCF=data/PharmCAT_tutorial_get-rm_wgs_30x_grch38.vcf.bgz
 # run the PharmCAT VCF preprocessor
 python3 "$VCF_PREPROCESS_SCRIPT" \
   -vcf "$TUTORIAL_VCF" \
