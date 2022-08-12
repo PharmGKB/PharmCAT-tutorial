@@ -42,7 +42,7 @@ done
 ## 02. concatenate by-chromosome VCFs
 #######################################################
 # concatenate VCFs of different chromosomes into one
-$BCFTOOLS concat \
+bcftools concat \
 --file-list "$TO_BE_CONCAT_FILE_LIST" \
 -no-version \
 -Oz \
