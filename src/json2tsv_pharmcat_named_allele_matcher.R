@@ -21,7 +21,7 @@ if (!require(tidyverse, quietly=T)) {install.packages('tidyverse'); library(tidy
 # read external parameters
 opt_list <- list(
   make_option("--input-dir", type="character", default = getwd(), help="Full path to the input file directory"),
-  make_option("--input-file-pattern", type="character", default="*json", help="Pattern of the input file"),
+  make_option("--input-file-pattern", type="character", default="*match.json", help="Pattern of the input file"),
   make_option("--output-dir", type="character", default= getwd(), help="Output directory"),
   make_option("--prefix-output-file", type="character", default="PharmCAT_Matcher_results", help="prefix of the output file")
 )
