@@ -57,13 +57,18 @@ PharmCAT has the following features that make it a desired tool for PGx implemen
 
 ## Setup of the tutorial
 
+### Pre-prepared Docker container (preferred for tutorial)
+
 This tutorial is going to use a pre-prepared Docker image that comes with all pre-requisite software and dependencies for you to successfully run PharmCAT without worries at the first try. 
 
 To run a Docker image on your computer, you need to [download Docker here](https://docs.docker.com/get-docker/). 
 
 Once you finish the download, open Docker.
 
+### Running in your own computing environment
+
 If you don't want to use the pre-prepared Docker image, make sure you have the following software and dependencies in your system:
+
 1. java 17 or higher, _e.g._, [OpenJDK by Adoptium](https://adoptium.net)
 2. PharmCAT Jar file from [the PharmCAT webpage](https://pharmcat.org/) or [the PharmCAT GitHub repository releases page](https://github.com/PharmGKB/PharmCAT/releases/latest).
 3. PharmCAT's VCF preprocessor
@@ -80,6 +85,14 @@ If you don't want to use the pre-prepared Docker image, make sure you have the f
    4. tidyverse >= 1.3.0
    5. foreach >= 1.5.2
    6. doParallel >= 1.0.17
+
+To clone this tutorial GitHub repository for test data, use the following command line:
+```shell
+git clone git@github.com:PharmGKB/PharmCAT-tutorial.git
+cd PharmCAT-tutorial/
+
+
+```
 
 [Back to Top](#pageTop)
 <div id='vcfPreprocessor'/> 
