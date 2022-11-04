@@ -2,11 +2,13 @@
 
 <div id='pageTop'/> 
 
-https://github.com/luong-komorebi/Markdown-Tutorial
+![PharmCAT logo](images/pharmcat_logo.png)
 
-This tutorial teaches you how to run PharmCAT. And this repository provides genetic data and other materials that you need to familiarize yourself with PharmCAT v2.0.
+By the end of this tutorial, you will know how to use PharmCAT for data analysis and annotation.
 
-> :warning: **Note**: parallel computing feature will be added in the near future to the PharmCAT VCF preprocessor and PharmCAT!
+This repository provides genetic data and other materials that you need to familiarize yourself with PharmCAT v2.0.
+
+> **Note**: parallel computing feature will be added in the near future to the PharmCAT VCF preprocessor and PharmCAT!
 
 > **Citing PharmCAT**: 
 > 1. Klein, T. E. & Ritchie, M. D. PharmCAT: A Pharmacogenomics Clinical Annotation Tool. Clin Pharmacol Ther 104, 19–22 (2018).
@@ -35,8 +37,9 @@ Pharmacogenomics Clinical Annotation Tool (PharmCAT) is a software tool that ser
 
 You can find more information about the PharmCAT project and tool on [pharmcat.org](https://pharmcat.org/).
 
+This figure explains the workflow of PharmCAT. We will explore every part of PharmCAT that is represented in this figure. You will have a better understanding about each part at the end of this tutorial.
+![PharmCAT workflow](images/pharmcat_workflow.jpg)
 
-figures of PharmCAT workflow
 
 [Back to Top](#pageTop)
 <div id='whyPhramcat'/> 
@@ -65,7 +68,7 @@ PharmCAT has the following features that make it a desired tool for PGx implemen
 Three [GeT-RM](https://www.cdc.gov/labquality/get-rm/AboutGet-RM.html) samples will be used for this tutorial. We prepared VCF files from the [30x whole-genome sequencing data](https://doi.org/10.1101/2021.02.06.430068). The files are available under the _data/_ folder. 
 
 
-### 3.1. Pre-prepared Docker container (preferred for tutorial)
+### 3.1. (Recommended) Pre-prepared Docker container
 
 This tutorial is going to use a pre-prepared Docker image that comes with all pre-requisite software and dependencies for you to successfully run PharmCAT without worries or extra efforts. 
 
@@ -73,7 +76,7 @@ To run a Docker image on your computer, you need to [download Docker here](https
 
 Once you finish the download, open the Docker application.
 
-### 3.2. Running in your own computing environment
+### 3.2. (Alternative) Running in your own computing environment
 
 If you don't want to use the pre-prepared Docker image, you can run PharmCAT using your own computing environment, _e.g._, terminal in macOS. Make sure you have the following software and dependencies in your system:
 
@@ -107,7 +110,7 @@ cd PharmCAT-tutorial/
 ## 4. Run the PharmCAT VCF preprocessor
 
 The PharmCAT VCF preprocessor, written in python 3, makes sure the input VCF file(s) meet the [PharmCAT’s VCF requirements](https://pharmcat.org/using/VCF-Requirements/). Different genetic testing labs or sequencing companies prepare their own VCF files using different bioinformatics pipelines. This can lead to slight but consequential differences between VCF files from different sources. We highly recommend preparing and normalizing your VCF files using the PharmCAT VCF preprocessor for the following benefits:
-1. [Normalizing and standardizing of VCF files](https://doi.org/10.1093/bioinformatics/btv112)
+1. Normalizing and standardizing of VCF files ([reference](https://doi.org/10.1093/bioinformatics/btv112))
 2. Retaining only PGx allele definiting positions of interest
 3. Splitting a multi-sample VCF file into single-sample VCF files for PharmCAT
 4. Many other more functions to improve the computing performance and the accuracy of your PGx reports!
@@ -383,4 +386,7 @@ Rscript src/json2tsv_pharmcat_report.R \
 
 Reference:
 [^1] Byrska-Bishop, M. et al. High coverage whole genome sequencing of the expanded 1000 Genomes Project cohort including 602 trios. 2021.02.06.430068 Preprint at https://doi.org/10.1101/2021.02.06.430068 (2021).
+
+## Acknowledgement
+PharmCAT is managed at Stanford University & University of Pennsylvania (NHGRI U24HG010862).
 
