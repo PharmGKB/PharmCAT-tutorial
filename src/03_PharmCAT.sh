@@ -12,7 +12,7 @@ PHARMCAT_JAR=pharmcat-latest-version-all.jar
 # reference materials
 TEST_SAMPLES="$PROJECT_DIR"/data/test_get-rm_samples.txt
 # one way to generate such a list of samples is via bcftools
-bcftools query -l "$PROJECT_DIR"/data/PharmCAT_tutorial_get-rm_wgs_30x_grch38.vcf.bgz > "$TEST_SAMPLES"
+bcftools query -l "$PROJECT_DIR"/data/pharmcat_tutorial_get-rm_wgs_30x_grch38.vcf.bgz > "$TEST_SAMPLES"
 
 # input VCFs
 PREPROCESSED_DIR="$PROJECT_DIR"/results/pharmcat_ready/

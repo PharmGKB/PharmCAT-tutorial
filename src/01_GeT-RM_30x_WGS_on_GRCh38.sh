@@ -1,5 +1,5 @@
 ## Author:Binglan Li
-## Date: 03/23/2022
+## Date: 11/03/2022
 ## Purpose: PharmCAT tutorial using the GeT-RM samples that were part of the International Genome Sample Resource
 ##          30x WGS on GRCh38 datasets sequenced and prepared by the New York Genome Center
 
@@ -11,10 +11,10 @@ cd "$PROJECT_DIR"
 # path to the tutorial GeT-RM sample list
 TEST_SAMPLES=data/test_get-rm_samples.txt
 # manually prepared PGx regions based on "PharmCAT/pharmcat_positions.vcf"
-PGX_GENE_REGION_FILE=pharmcat_positions_w_1Mbp_padding_regions.txt
+PGX_GENE_REGION_FILE=pharmcat_positions_w_1mbp_padding_regions.txt
 
 # define the desired VCF file name that will be used for the tutorial
-TUTORIAL_VCF=PharmCAT_tutorial_get-rm_wgs_30x_grch38.vcf.gz
+TUTORIAL_VCF=pharmcat_tutorial_get-rm_wgs_30x_grch38.vcf.gz
 
 #######################################################
 ## 01. Extract PGx regions

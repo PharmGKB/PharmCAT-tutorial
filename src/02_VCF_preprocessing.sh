@@ -9,9 +9,9 @@ cd "$PROJECT_DIR"
 # get the latest VCF preprocessor script
 wget https://github.com/PharmGKB/PharmCAT/releases/latest/pharmcat-preprocessor-<latest_version>.tar.gz
 tar -xvf pharmcat-preprocessor-<latest_version>.tar.gz
-VCF_PREPROCESS_SCRIPT=preprocessor/PharmCAT_VCF_Preprocess.py
+VCF_PREPROCESS_SCRIPT=preprocessor/pharmcat_vcf_preprocess.py
 # install the required python libraries
-pip3 install -r preprocessor/PharmCAT_VCF_Preprocess_py3_requirements.txt
+pip3 install -r preprocessor/requirements.txt
 # reference PGx positions used by the PharmCAT
 REF_PGX_VCF=preprocessor/pharmcat_positions.vcf.bgz
 
@@ -35,7 +35,7 @@ done
 # Preprocess VCFs - multi-sample VCF
 ######################################################
 # input multi-sample VCF
-TUTORIAL_VCF=data/PharmCAT_tutorial_get-rm_wgs_30x_grch38.vcf.bgz
+TUTORIAL_VCF=data/pharmcat_tutorial_get-rm_wgs_30x_grch38.vcf.bgz
 # run the PharmCAT VCF preprocessor
 python3 "$VCF_PREPROCESS_SCRIPT" \
   -vcf "$TUTORIAL_VCF" \
