@@ -23,7 +23,7 @@ opt_list <- list(
   make_option("--input-dir", type="character", default = getwd(), help="Input file directory, default = current working directory"),
   make_option("--input-file-pattern", type="character", default="*report.json", help="Pattern of the input file"),
   make_option("--output-dir", type="character", default= getwd(), help="Output directory"),
-  make_option("--prefix-output-file", type="character", default="PharmCAT_Phenotyper_results", help="prefix of the output file")
+  make_option("--prefix-output-file", type="character", default="PharmCAT_results", help="prefix of the output file")
 )
 opts <- parse_args(OptionParser(option_list=opt_list))
 # parse values
