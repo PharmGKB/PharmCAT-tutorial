@@ -26,6 +26,7 @@ Table of contents
    3. [Outside PGx calls](#outsideCall)
    4. [Batch-annotation on multiple individuals](#batchAnalysis)
    5. [Extracting the PharmCAT JSON data into a TSV file](#json2tsv)
+6. [Transfer ]
 *******
 
 <div id='introToPharmcat'/> 
@@ -63,7 +64,7 @@ PharmCAT has the following features that make it a desired tool for PGx implemen
 <div id='setupEnv'/> 
 
 
-## 3. Setup of the tutorial
+## 3. Setup for the tutorial
 
 Three [GeT-RM](https://www.cdc.gov/labquality/get-rm/AboutGet-RM.html) samples will be used for this tutorial. We prepared VCF files from the [30x whole-genome sequencing data](https://doi.org/10.1101/2021.02.06.430068). The files are available under the _data/_ folder. 
 
@@ -74,7 +75,14 @@ This tutorial is going to use a pre-prepared Docker image that comes with all pr
 
 To run a Docker image on your computer, you need to [download Docker here](https://docs.docker.com/get-docker/). 
 
-Once you finish the download, open the Docker application.
+Once you finish the download, open the Docker application. (Don't forget to register a Docker account!)
+
+![image](docker_desktop)
+
+![image](docker_image) -> highlight run
+
+![image](a_running_docker_image) -> 3 dots to open the running container in a terminal (by default the integrated terminal)
+
 
 ### 3.2. (Alternative) Running in your own computing environment
 
@@ -86,7 +94,7 @@ If you don't want to use the pre-prepared Docker image, you can run PharmCAT usi
    1. Downloadable from [the PharmCAT GitHub repository releases page](https://github.com/PharmGKB/PharmCAT/releases/latest)
    2. Python >= 3.9.4 (Note that Python 3.11 has not been tested yet)
    3. [bcftools >= 1.16](http://www.htslib.org/download/)
-   4. [bgzip >= 1.16](http://www.htslib.org/download/)
+   4. [bgzip from htslib >= 1.16](http://www.htslib.org/download/)
    5. Python3 package: pandas >= 1.5.1
    6. Python3 package: scikit-allell >= 1.3.5
 4. JSON to TSV
@@ -99,8 +107,18 @@ If you don't want to use the pre-prepared Docker image, you can run PharmCAT usi
 
 Please clone this PharmCAT tutorial GitHub repo for the prepared VCF data. You can use the following commands:
 ```shell
+# download the tutorial material
 git clone git@github.com:PharmGKB/PharmCAT-tutorial.git
 cd PharmCAT-tutorial/
+
+# please replace “<latest-release>” with the latest release number
+# download the latest PharmCAT release
+wget https://github.com/PharmGKB/PharmCAT/releases/download/<latest-release>/pharmcat-<latest-release>-all.jar
+# download the VCF preprocessor
+wget https://github.com/PharmGKB/PharmCAT/releases/download/<latest-release>/pharmcat-preprocessor-<latest-release>.tar.gz 
+# unzip
+tar -xvf pharmcat-preprocessor-<latest-release>.tar.gz
+mv preprocessor/* ./
 ```
 
 [Back to Top](#pageTop)
@@ -147,7 +165,7 @@ Run the following command to preprocess the VCF file for _NA18526_.
 # copy and paste the command to the docker image
 mkdir -p results/pharmcat_ready/
 python3 pharmcat_vcf_preprocess.py \
-  -vcf data/pharmcat_tutorial_get-rm_wgs_30x_grch38.NA18526.vcf.gz \
+  -vcf data/pharmcat_tutorial_get-rm_wgs_30x_grch38.NA18526.vcf.bgz \
   -refFna reference.fna.bgz \
   -refVcf pharmcat_positions.vcf.bgz \
   -o results/pharmcat_ready/
@@ -156,6 +174,11 @@ python3 pharmcat_vcf_preprocess.py \
 # 1. results/pharmcat_ready/NA18526.preprocessed.vcf
 # 2. results/pharmcat_ready/pharmcat_tutorial_get-rm_wgs_30x_grch38.NA18526.missing_pgx_var.vcf.bgz
 ```
+<details>
+   <summary>Click to see what it looks like in a Docker container</summary>
+   ![image](what it looks like in a docker)
+</details>
+
 
 #### 4.2.2. A multi-sample VCF file
 
@@ -166,7 +189,7 @@ Here we have an exemplary multi-sample VCF file that has genotype data for three
 # copy and paste the command to the docker image
 mkdir -p results/pharmcat_ready/
 python3 pharmcat_vcf_preprocess.py \
-  -vcf data/pharmCAT_tutorial_get-rm_wgs_30x_grch38.vcf.gz \
+  -vcf data/pharmCAT_tutorial_get-rm_wgs_30x_grch38.vcf.bgz \
   -refFna reference.fna.bgz \
   -refVcf pharmcat_positions.vcf.bgz \
   -o results/pharmcat_ready/
@@ -177,6 +200,10 @@ python3 pharmcat_vcf_preprocess.py \
 # 3. results/pharmcat_ready/NA18861.preprocessed.vcf
 # 4. results/pharmcat_ready/pharmcat_tutorial_get-rm_wgs_30x_grch38.missing_pgx_var.vcf.bgz
 ```
+<details>
+   <summary>Click to see what it looks like in a Docker container</summary>
+   ![image](what it looks like in a docker)
+</details>
 
 #### 4.2.3. Multiple VCFs of non-overlapping genetic blocks
 
@@ -197,6 +224,11 @@ python3 pharmcat_vcf_preprocess.py \
 # 3. results/pharmcat_ready/NA18861.preprocessed.vcf
 # 4. results/pharmcat_ready/input_vcf_list.missing_pgx_var.vcf.bgz
 ```
+<details>
+   <summary>Click to see what it looks like in a Docker container</summary>
+   ![image](what it looks like in a docker)
+</details>
+
 
 [Back to Top](#pageTop)
 <div id='runPharmcat'/> 
