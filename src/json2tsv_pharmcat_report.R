@@ -1,6 +1,6 @@
 ## Author: Binglan Li
-## Date: 03/23/2022
-## Purpose: Organize PharmCAT Phenotyper Results
+## Date: 11/10/2022
+## Purpose: Organize PharmCAT Results
 
 
 ############################################
@@ -14,16 +14,20 @@
 ############################################
 ## Load necessary libraries and scripts
 ############################################
-if (!require(rjson, quietly=T)) {install.packages('rjson'); library(rjson)}
-if (!require(optparse, quietly=T)) {install.packages('optparse'); library(optparse)}
-if (!require(tidyverse, quietly=T)) {install.packages('tidyverse'); library(tidyverse)}
+suppressMessages(if (!require(rjson, quietly=T)) {install.packages("rjson"); library(rjson, quietly = T)})
+suppressMessages(if (!require(optparse, quietly=T)) {install.packages("optparse"); library(optparse, quietly = T)})
+suppressMessages(if (!require(tidyverse, quietly=T)) {install.packages("tidyr"); library(tidyr, quietly = T)})
+suppressMessages(if (!require(foreach, quietly=T)) {install.packages("foreach"); library(foreach, quietly = T)})
+suppressMessages(if (!require(doParallel, quietly=T)) {install.packages("doParallel"); library(doParallel, quietly = T)})
 
 # read external parameters
 opt_list <- list(
   make_option("--input-dir", type="character", default = getwd(), help="Input file directory, default = current working directory"),
   make_option("--input-file-pattern", type="character", default="*report.json", help="Pattern of the input file"),
   make_option("--output-dir", type="character", default= getwd(), help="Output directory"),
-  make_option("--prefix-output-file", type="character", default="PharmCAT_results", help="prefix of the output file")
+  make_option("--prefix-output-file", type="character", default="pharmcat_report_results", help="prefix of the output file"),
+  make_option("--core", type="numeric", default=1, help="Number of cores to run parallel tasks (default = %default)")
+
 )
 opts <- parse_args(OptionParser(option_list=opt_list))
 # parse values
@@ -34,6 +38,9 @@ output_dir <- opts$`output-dir`
 output_dir <- paste0(output_dir, "/")
 output_prefix <- opts$`prefix-output-file`
 
+# parallel cores
+numCores <- opts$core
+print(paste0("numCores=", numCores))
 
 ############################################
 ## Read files
@@ -50,9 +57,16 @@ headers <- paste(c("samples", "gene", "phenotype", "phenotype_source","haplotype
 write.table(headers, file = paste0(output_dir, output_prefix, ".tsv"), sep = "\t",
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
-# exhaustively read result json files
-for (single_file in input_file_list){
+# start parallelization
+bgt <- Sys.time()
+registerDoParallel(numCores)
+
+# read result json files one by one
+foreach_output <- data.frame()
+foreach_output <- foreach(i=1:length(input_file_list), .combine = rbind) %dopar% {
+  single_file <- input_file_list[i]
   summary_results <- data.frame()
+
   single_file_name_fields <- unlist(strsplit(basename(single_file), split = "[.]"))
   sample_id <- single_file_name_fields[length(single_file_name_fields) - 3]
   
@@ -90,3 +104,6 @@ for (single_file in input_file_list){
 # alarm of the output file
 print(paste("Writing the TSV output to ", paste0(output_dir, output_prefix, ".tsv"), sep = ""))
 
+# print running time
+edt <- Sys.time()
+print(edt-bgt)
