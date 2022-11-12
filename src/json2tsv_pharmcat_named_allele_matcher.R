@@ -14,6 +14,7 @@
 ############################################
 ## Load necessary libraries and scripts
 ############################################
+Sys.setenv(TZ='America/Los_Angeles')
 suppressMessages(if (!require(rjson, quietly=T)) {install.packages("rjson"); library(rjson, quietly = T)})
 suppressMessages(if (!require(optparse, quietly=T)) {install.packages("optparse"); library(optparse, quietly = T)})
 suppressMessages(if (!require(tidyverse, quietly=T)) {install.packages("tidyr"); library(tidyr, quietly = T)})
