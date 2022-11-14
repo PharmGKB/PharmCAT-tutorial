@@ -11,7 +11,6 @@ RUN mv PharmCAT-tutorial/* ./
 WORKDIR /pharmcat/
 
 # install R
-#RUN apt install -y dirmngr gnupg apt-transport-https ca-certificates software-properties-common
 RUN apt install -y software-properties-common
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-key '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7'
 RUN add-apt-repository 'deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/'
@@ -25,4 +24,6 @@ RUN R -e "install.packages('doParallel', version = '1.0.17', dependencies=TRUE, 
 
 
 # set time zone
-ENV TZ="America/Los_Angeles"
+#ENV TZ="America/Los_Angeles"
+
+
