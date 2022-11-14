@@ -13,23 +13,28 @@ This repository provides genetic data and other materials that you need to famil
 > **Citing PharmCAT**:
 > 1. Klein, T. E. & Ritchie, M. D. PharmCAT: A Pharmacogenomics Clinical Annotation Tool. Clin Pharmacol Ther 104, 19–22 (2018).
 > 2. Sangkuhl, K. et al. Pharmacogenomics Clinical Annotation Tool (PharmCAT). Clin Pharmacol Ther 107, 203–210 (2020).
+> 3. Li, B., Sangkuhl, K. et al. How to Run the Pharmacogenomics Clinical Annotation Tool (PharmCAT). Clinical Pharmacology & Therapeutics (2022).
 
 *******
 Table of contents
 1. [Intro to PharmCAT](#introToPharmcat)
 2. [Why use PharmCAT](#whyPhramcat)
-3. [Set up the environment for the tutorial](#setupEnv)
+3. [Set up for the tutorial](#setupEnv)
 4. [Run the PharmCAT VCF preprocessor (strongly recommended)](#vcfPreprocessor)
 5. [Run PharmCAT](#runPharmcat)
    1. [Run the whole PharmCAT](#runPharmcat)
-   2. [Outside PGx calls](#outsideCall)
-6. [Advanced uses](#advancedUse)
-   1.
-   2. [Individual PharmCAT modules](#advancedUse)
-   3. [Batch-annotation on multiple individuals](#batchAnalysis)
-   4. [Extracting the PharmCAT JSON data into a TSV file](#json2tsv)
-7. [Transfer files and stop the Docker container](#stopDocker)
-8. [Advanced uses]
+   2. [Incorporate outside PGx calls](#outsideCall)
+   3. [Batch-annotation on multiple samples](#batchAnalysis)
+6. [Extracting the PharmCAT JSON data into a TSV file](#json2tsv)
+7. [Advanced uses](#advancedUse)
+   1. [Individual PharmCAT modules](#advancedUse)
+   2. [PharmCAT Research mode](#researchMode)
+      1. [Calling combination or partial alleles](#researchMode)
+      2. [Inferring CYP2D6 based on SNPs and INDELs](#researchMode)
+   3. [Multiprocessing support for the PharmCAT VCF Preprocessor](#concurrentProcessor)
+   4. [Multiprocessing support for JSON-to-TSV](concurrentjson2tsv)
+8. [Transfer files and stop the Docker container](#stopDocker)
+9. [Advanced uses]
 *******
 
 
@@ -71,7 +76,7 @@ PharmCAT has the following features that make it a desired tool for PGx implemen
 
 ## 3. Setup for the tutorial
 
-Three [GeT-RM](https://www.cdc.gov/labquality/get-rm/AboutGet-RM.html) samples will be used for this tutorial. We prepared VCF files from the [30x whole-genome sequencing data](https://doi.org/10.1101/2021.02.06.430068). The files are available under the _data/_ folder.
+We prepared the VCF files based on the [30x whole-genome sequencing data](https://doi.org/10.1101/2021.02.06.430068) for three samples from [the Genetic Testing Reference Materials (GeT-RM) Coordination Program](https://www.cdc.gov/labquality/get-rm/AboutGet-RM.html). The consensus PGx calls for these samples are available on [the GeT-RM website](https://www.cdc.gov/labquality/get-rm/AboutGet-RM.html).
 
 
 ### 3.1. (Recommended) Pre-prepared Docker container
@@ -93,7 +98,7 @@ Steps:
       $docker pull pgkb/pharmcat-tutorial
    ```
    <details>
-   <summary>Click to see what it looks like in Docker Desktop. </summary>
+   <summary>Click to see what it looks like in a terminal. </summary>
 
    ![terminal_pull_image](images/terminal_pull_image.png)
    </details>
@@ -106,7 +111,7 @@ Steps:
    ![docker_tutorial_image](images/docker_tutorial_image.png)
    </details>
 
-5. Locate and click the `Containers` tab on the left. You will see a running instance of the PharmCAT tutorial. On the right, under the `Actions`, click ![docker_actions_menu](images/docker_actions_menu.png), click `Open in terminal`.
+5. Locate and click the `Containers` tab on the left. You will see a running instance of the PharmCAT tutorial. On the right, under the `Actions`, click ![docker_actions_menu](images/docker_actions_menu.png), and choose `Open in terminal`.
    <details>
          <summary>Click to see what it looks like in Docker Desktop. </summary>
 
@@ -167,26 +172,22 @@ The PharmCAT VCF preprocessor, written in python 3, makes sure the input VCF fil
 1. Normalizing and standardizing of VCF files ([reference](https://doi.org/10.1093/bioinformatics/btv112))
 2. Retaining only PGx allele definiting positions of interest
 3. Splitting a multi-sample VCF file into single-sample VCF files for PharmCAT
-4. Many other more functions to improve the computing performance and the accuracy of your PGx reports!
+4. Many more improvements for the computing performance and the accuracy of your PGx reports!
 
 :exclamation: Below, we will (1) introduce the basics of the preprocessor and (2) provide some real-world examples.
 
 ### 4.1. How to use the PharmCAT VCF preprocessor
 
-#### 4.1.1. Input and outputs (part 1 or 2)
-
-- The **only** mandatory input
-   - A VCF file
-- Outputs include two parts:
-   - (1) Single-sample VCF file(s) that are ready for PharmCAT
-   - (2) A report of missing PGx positions in your input VCF
-
-#### 4.1.2. PharmCAT syntax (part 2 or 2)
-
 The basic syntax of the PharmCAT VCF preprocessor is as following:
 ```shell
 python3 pharmcat_vcf_preprocessor.py -vcf <path_to_vcf(.gz)>
 ```
+- The **only** mandatory input
+   - A VCF file
+- Two sets of Outputs
+  1. Single-sample VCF file(s) that are ready for PharmCAT
+  2. A report of missing PGx positions in your input VCF
+
 A few arguments that are going to be used in this tutorial include:
 - `-vcf <path_to_vcf>` = a single-sample VCF file, a multi-sample VCF file, or a list file of VCF file paths. VCF files can be either bgzip-compressed or uncompressed.
 - `-refFna <path_to_file>` = path to indexed human reference genome sequence on GRCh38/hg38. The reference genome sequence file can be either compressed or non-compressed, but it must be indexed. The reference genome sequence file will be automatically downloaded (~1 GB) and indexed to the current working directory if not provided by user.
@@ -213,7 +214,7 @@ python3 pharmcat_vcf_preprocessor.py \
 <details>
    <summary>Click to see what it looks like in Docker Desktop</summary>
 
-![docker_preprocessor_single_sample](docker_preprocessor_single_sample.png)
+![docker_preprocessor_single_sample](images/docker_preprocessor_single_sample.png)
 </details>
 
 
@@ -235,7 +236,7 @@ python3 pharmcat_vcf_preprocessor.py \
 <details>
    <summary>Click to see what it looks like in Docker Desktop</summary>
 
-![docker_preprocessor_multiple_samples](docker_preprocessor_multiple_samples.png)
+![docker_preprocessor_multiple_samples](images/docker_preprocessor_multiple_samples.png)
 </details>
 
 #### 4.2.3. Multiple VCFs of non-overlapping genetic blocks
@@ -255,7 +256,7 @@ python3 pharmcat_vcf_preprocessor.py \
 <details>
    <summary>Click to see what it looks like in Docker Desktop</summary>
 
-![docker_preprocessor_chromosomes](docker_preprocessor_chromosomes.png)
+![docker_preprocessor_chromosomes](images/docker_preprocessor_chromosomes.png)
 </details>
 
 
@@ -343,7 +344,7 @@ java -jar pharmcat.jar \
 
 <div id='batchAnalysis'/>
 
-### 5.3. Batch-annotation on multiple individuals
+### 5.3. Batch-annotation on multiple samples
 
 > **Note** parallele feature for the PharmCAT VCF Preprocessor and PharmCAT itself will be updated in the near future.
 
@@ -402,7 +403,6 @@ Rscript src/json2tsv_pharmcat_report.R \
 <div id='advancedUse'/>
 
 ## 7. Advanced uses
-
 
 ### 7.1. Run individual PharmCAT modules
 
@@ -517,6 +517,12 @@ java -jar pharmcat.jar \
   -bf combinations.NA18861 \
   -research combinations
 ```
+<details>
+   <summary>Click to see what it looks like in Docker Desktop</summary>
+
+![docker_pharmcat_research_combinations](images/docker_pharmcat_research_combinations.png)
+</details>
+
 
 #### 7.2.2. Inferring CYP2D6 based on SNPs and INDELs
 
@@ -531,6 +537,11 @@ java -jar pharmcat.jar \
   -bf cyp2d6.NA18861 \
   -research cyp2d6
 ```
+<details>
+   <summary>Click to see what it looks like in Docker Desktop</summary>
+
+![docker_pharmcat_cyp2d6](images/docker_pharmcat_cyp2d6.png)
+</details>
 
 
 <div id='concurrentProcessor'/>
@@ -580,9 +591,12 @@ Rscript src/json2tsv_pharmcat_report.R \
 ```
 - `--core <num processes>` = Enabling concurrent mode. Note that you always need to specify the number of processes to use for json2tsv R scripts.
 
+
 <div id='stopDocker'/>
 
-## 8. Transfer files and stop the Docker container
+## 8. Transfer files and/or stop the Docker container
+
+### 8.1. Transfer files
 
 At this step, you probably would want to transfer files between the local host and the Docker container.
 ```shell
@@ -594,10 +608,20 @@ docker cp -a <Docker_Container_ID>:/pharmcat/results/ $PWD
 docker cp <Docker_Container_ID>:/pharmcat/results/ $PWD
 
 # transfer a file from your local host to the docker
-docker cp <path/to/local/file.vcf> <Docker_Container_ID>:/pharmcat/file.vcf
+docker cp <path/to/local/file.vcf> <Docker_Container_ID>:/pharmcat/
 ```
 
-![image](stop a container or even remove it)
+### 8.2. Stop the container
+
+
+![docker_stop_container](images/docker_stop_container.png)
+
+### 8.3. Remove the image
+
+
+![docker_remove_image](images/docker_remove_image.png)
+
+
 
 [Back to Top](#pageTop)
 

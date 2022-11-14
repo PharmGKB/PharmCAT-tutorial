@@ -24,6 +24,6 @@ RUN R -e "install.packages('doParallel', version = '1.0.17', dependencies=TRUE, 
 
 
 # set time zone
-#ENV TZ="America/Los_Angeles"
+ENV TZ="America/Los_Angeles"
 
 
