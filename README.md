@@ -8,7 +8,7 @@ By the end of this tutorial, you will know how to use PharmCAT for data analysis
 
 This repository provides genetic data and other materials that you need to familiarize yourself with PharmCAT v2.0.
 
-> **Note**: parallel computing feature will be added in the near future to the PharmCAT VCF preprocessor and PharmCAT!
+> **Note**: parallel computing feature will be added in the near future to the PharmCAT VCF Preprocessor and PharmCAT!
 
 > **Citing PharmCAT**:
 > 1. Klein, T. E. & Ritchie, M. D. PharmCAT: A Pharmacogenomics Clinical Annotation Tool. Clin Pharmacol Ther 104, 19–22 (2018).
@@ -20,7 +20,7 @@ Table of contents
 1. [Intro to PharmCAT](#introToPharmcat)
 2. [Why use PharmCAT](#whyPhramcat)
 3. [Set up for the tutorial](#setupEnv)
-4. [Run the PharmCAT VCF preprocessor (strongly recommended)](#vcfPreprocessor)
+4. [Run the PharmCAT VCF Preprocessor (strongly recommended)](#vcfPreprocessor)
 5. [Run PharmCAT](#runPharmcat)
    1. [Run the whole PharmCAT](#runPharmcat)
    2. [Incorporate outside PGx calls](#outsideCall)
@@ -130,7 +130,7 @@ If you don't want to use the pre-prepared Docker image, you can run PharmCAT usi
 
 1. Java 17 or higher, _e.g._, [OpenJDK by Adoptium](https://adoptium.net)
 2. PharmCAT Jar file from [the PharmCAT webpage](https://pharmcat.org/) or [the PharmCAT GitHub repository releases page](https://github.com/PharmGKB/PharmCAT/releases/latest).
-3. PharmCAT's VCF preprocessor
+3. PharmCAT's VCF Preprocessor
    1. Downloadable from [the PharmCAT GitHub repository releases page](https://github.com/PharmGKB/PharmCAT/releases/latest)
    2. Python >= 3.9.4 (Note that Python 3.11 has not been tested yet)
    3. [bcftools >= 1.16](http://www.htslib.org/download/)
@@ -154,7 +154,7 @@ cd PharmCAT-tutorial/
 # please replace “<latest-release>” with the latest release number
 # download the latest PharmCAT release
 wget https://github.com/PharmGKB/PharmCAT/releases/download/<latest-release>/pharmcat-<latest-release>-all.jar
-# download the VCF preprocessor
+# download the VCF Preprocessor
 wget https://github.com/PharmGKB/PharmCAT/releases/download/<latest-release>/pharmcat-preprocessor-<latest-release>.tar.gz 
 # unzip
 tar -xvf pharmcat-preprocessor-<latest-release>.tar.gz
@@ -166,9 +166,9 @@ mv preprocessor/* ./
 
 <div id='vcfPreprocessor'/>
 
-## 4. Run the PharmCAT VCF preprocessor
+## 4. Run the PharmCAT VCF Preprocessor
 
-The PharmCAT VCF preprocessor, written in python 3, makes sure the input VCF file(s) meet the [PharmCAT’s VCF requirements](https://pharmcat.org/using/VCF-Requirements/). Different genetic testing labs or sequencing companies prepare their own VCF files using different bioinformatics pipelines. This can lead to slight but consequential differences between VCF files from different sources. We highly recommend preparing and normalizing your VCF files using the PharmCAT VCF preprocessor for the following benefits:
+The PharmCAT VCF Preprocessor, written in python 3, makes sure the input VCF file(s) meet the [PharmCAT’s VCF requirements](https://pharmcat.org/using/VCF-Requirements/). Different genetic testing labs or sequencing companies prepare their own VCF files using different bioinformatics pipelines. This can lead to slight but consequential differences between VCF files from different sources. We highly recommend preparing and normalizing your VCF files using the PharmCAT VCF Preprocessor for the following benefits:
 1. Normalizing and standardizing of VCF files ([reference](https://doi.org/10.1093/bioinformatics/btv112))
 2. Retaining only PGx allele definiting positions of interest
 3. Splitting a multi-sample VCF file into single-sample VCF files for PharmCAT
@@ -176,9 +176,9 @@ The PharmCAT VCF preprocessor, written in python 3, makes sure the input VCF fil
 
 :exclamation: Below, we will (1) introduce the basics of the preprocessor and (2) provide some real-world examples.
 
-### 4.1. How to use the PharmCAT VCF preprocessor
+### 4.1. How to use the PharmCAT VCF Preprocessor
 
-The basic syntax of the PharmCAT VCF preprocessor is as following:
+The basic syntax of the PharmCAT VCF Preprocessor is as following:
 ```shell
 python3 pharmcat_vcf_preprocessor.py -vcf <path_to_vcf(.gz)>
 ```
@@ -220,7 +220,7 @@ python3 pharmcat_vcf_preprocessor.py \
 
 #### 4.2.2. A multi-sample VCF file
 
-VCF files are usually comprised of multiple samples. As PharmCAT currently takes only a single-sample VCF, the VCF preprocessor can help prepare and split the multi-sample VCF file by samples for PharmCAT.
+VCF files are usually comprised of multiple samples. As PharmCAT currently takes only a single-sample VCF, the VCF Preprocessor can help prepare and split the multi-sample VCF file by samples for PharmCAT.
 
 Here we have an exemplary multi-sample VCF file that has genotype data for three (3) samples, _NA18526_, _NA18565_, and _NA18861_.
 ```shell

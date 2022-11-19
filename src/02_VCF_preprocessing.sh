@@ -1,12 +1,12 @@
 ## Author:Binglan Li
 ## Date: 03/23/2022
-## Purpose: PharmCAT VCF preprocessor on the 30x WGS GeT-RM samples
+## Purpose: PharmCAT VCF Preprocessor on the 30x WGS GeT-RM samples
 
 # work under the current tutorial directory
 PROJECT_DIR="$PWD"
 cd "$PROJECT_DIR"
 
-# get the latest VCF preprocessor script
+# get the latest VCF Preprocessor script
 wget https://github.com/PharmGKB/PharmCAT/releases/latest/pharmcat-preprocessor-<latest_version>.tar.gz
 tar -xvf pharmcat-preprocessor-<latest_version>.tar.gz
 VCF_PREPROCESS_SCRIPT=preprocessor/pharmcat_vcf_preprocess.py
@@ -24,7 +24,7 @@ mkdir -p "$PREPROCESSED_DIR"
 ######################################################
 for SINGLE_VCF in $(cat data/single_sample_vcf_list.txt)
 do
-    # run the PharmCAT VCF preprocessor
+    # run the PharmCAT VCF Preprocessor
     python3 "$VCF_PREPROCESS_SCRIPT" \
       -vcf "$SINGLE_VCF" \
       -refVcf "$REF_PGX_VCF" \
@@ -36,7 +36,7 @@ done
 ######################################################
 # input multi-sample VCF
 TUTORIAL_VCF=data/pharmcat_tutorial_get-rm_wgs_30x_grch38.vcf.bgz
-# run the PharmCAT VCF preprocessor
+# run the PharmCAT VCF Preprocessor
 python3 "$VCF_PREPROCESS_SCRIPT" \
   -vcf "$TUTORIAL_VCF" \
   -refVcf "$REF_PGX_VCF" \
