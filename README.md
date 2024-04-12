@@ -14,6 +14,8 @@ This repository provides genetic data and other materials that you need to famil
 > 1. Klein, T. E. & Ritchie, M. D. PharmCAT: A Pharmacogenomics Clinical Annotation Tool. Clin Pharmacol Ther 104, 19–22 (2018).
 > 2. Sangkuhl, K. et al. Pharmacogenomics Clinical Annotation Tool (PharmCAT). Clin Pharmacol Ther 107, 203–210 (2020).
 > 3. Li, B., Sangkuhl, K. et al. How to Run the Pharmacogenomics Clinical Annotation Tool (PharmCAT). Clinical Pharmacology & Therapeutics (2022).
+> 4. Li, B., Sangkuhl, K., Whaley, R., Woon, M., Keat, K., Whirl-Carrillo, M., Ritchie, M. D. & Klein, T. E. (2023). Frequencies of pharmacogenomic alleles across biogeographic groups in a large-scale biobank. Am J Hum Genet 110, 1628–1647.
+
 
 *******
 Table of contents

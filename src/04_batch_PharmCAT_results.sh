@@ -2,32 +2,21 @@
 ## Date: 03/23/02022
 ## Purpose: organize multiple PharmCAT results into a tabular file
 
+# create a conda environment
+conda env create -f src/environment.yml
+conda activate json2tsv
+
 # work under the current tutorial directory
 PROJECT_DIR="$PWD"
 cd "$PROJECT_DIR"
 
-###############################
-## Organize Named Allele Matcher results
-###############################
-SCRIPT_PATH=src/organize_pharmcat_named_allele_matcher_results.R
+# Organize PharmCAT results
+SCRIPT_PATH=src/json2tsv_pharmcat.py
 
-MATCHER_DIR=results/pharmcat_matcher/
-MATCHER_PATTERN=*json
+PHARMCAT_ALL_DIR="$PROJECT_DIR"/results/pharmcat_all/
+PHARMCAT_ALLELE_TRANSLATION_FILES='<path/to/PharmCAT/GitHub>/src/main/resources/org/pharmgkb/pharmcat/definition/alleles/*translation.json'
 
-Rscript  "$SCRIPT_PATH"\
-  --input-dir "$MATCHER_DIR" \
-  --input-file-pattern "$MATCHER_PATTERN" \
-  --output-dir "$PROJECT_DIR"
-
-###############################
-## Organize phenotyper results
-###############################
-SCRIPT_PATH=src/organize_pharmcat_phenotyper_results.R
-
-PHENOTYPER_DIR=results/pharmcat_phenotyper/
-PHENOTYPER_PATTERN=*json
-
-Rscript  "$SCRIPT_PATH" \
-  --input-dir "$PHENOTYPER_DIR" \
-  --input-file-pattern "$PHENOTYPER_PATTERN" \
-  --output-dir "$PROJECT_DIR"
+python3  "$SCRIPT_PATH"\
+  -i "$PHARMCAT_ALL_DIR" \
+  -a "$PHARMCAT_ALLELE_TRANSLATION_FILES" \
+  -o "$PROJECT_DIR"
