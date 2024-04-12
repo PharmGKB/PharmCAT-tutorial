@@ -382,20 +382,17 @@ done
 
 ## 6. Extracting the PharmCAT JSON data into a TSV file
 
-We also provide accessory R scripts that organize and extract content from the Named Allele Matcher or Reporter JSON outputs into tab-separated values (TSV) files, which is a format commonly used in data analysis.
+We also provide an accessory python script that organizes and extracts content from the Named Allele Matcher or Reporter JSON outputs into a tab-separated values (TSV) file, which is a format commonly used in data analysis.
 
 ```shell
-# Extract the allele matching details from the PharmCAT Named Allele Matcher JSON files
-Rscript src/json2tsv_pharmcat_named_allele_matcher.R \
-  --input-dir results/pharmcat_all/ \
-  --input-file-pattern .*match.json \
-  --output-dir results/
-
-# Extract the phenotype details that are used for drug prescribing recommendations from the PharmCAT Reporter JSON files
-Rscript src/json2tsv_pharmcat_report.R \
-  --input-dir results/pharmcat_all/ \
-  --input-file-pattern *report.json \
-  --output-dir results/
+# install the necessary python packages using conda
+conda env create -f src/environment.yml
+conda activate json2tsv
+# extract json content into a tsv file
+python3 src/json2tsv_pharmcat.py \
+  -i results/pharmcat_all/ \
+  -a </path/to/pharmcat/allele/definition/json/> \
+  -o results/
 ```
 
 
@@ -574,24 +571,17 @@ python3 pharmcat_vcf_preprocessor.py \
 
 ### 7.4. Multiprocessing support for JSON-to-TSV
 
-You can also run the json2tsv R scripts in concurrent mode.
+You can also run the json2tsv python script in concurrent mode.
 
 ```shell
-# Extract the allele matching details from the PharmCAT Named Allele Matcher JSON files
-Rscript src/json2tsv_pharmcat_named_allele_matcher.R \
-  --input-dir results/pharmcat_all/ \
-  --input-file-pattern .*match.json \
-  --output-dir results/ \
-  --core 3
-
-# Extract the phenotype details that are used for drug prescribing recommendations from the PharmCAT Reporter JSON files
-Rscript src/json2tsv_pharmcat_report.R \
-  --input-dir results/pharmcat_all/ \
-  --input-file-pattern *report.json \
-  --output-dir results/ \
-  --core 3
+python3 src/json2tsv_pharmcat.py \
+  -i results/pharmcat_all/ \
+  -a </path/to/pharmcat/allele/definition/json/> \
+  -o results/ \
+  -c -cp 8
 ```
-- `--core <num processes>` = Enabling concurrent mode. Note that you always need to specify the number of processes to use for json2tsv R scripts.
+- `-c` = Enabling concurrent mode. 
+- `-cp` = the maximum number of processors to be used. Note that you always need to specify the number of processes. We will improve the feature in the future.
 
 
 <div id='stopDocker'/>
