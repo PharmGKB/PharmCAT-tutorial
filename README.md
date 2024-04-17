@@ -382,19 +382,7 @@ done
 
 ## 6. Extracting the PharmCAT JSON data into a TSV file
 
-We also provide an accessory python script that organizes and extracts content from the Named Allele Matcher or Reporter JSON outputs into a tab-separated values (TSV) file, which is a format commonly used in data analysis.
-
-```shell
-# install the necessary python packages using conda
-conda env create -f src/environment.yml
-conda activate json2tsv
-# extract json content into a tsv file
-python3 src/json2tsv_pharmcat.py \
-  -i results/pharmcat_all/ \
-  -a </path/to/pharmcat/allele/definition/json/> \
-  -o results/
-```
-
+The instruction has been moved to [the Multi-Sample Analysis webpage](https://pharmcat.org/using/Multi-Sample-Analysis/#extracting-pharmcat-json-content-into-tsv) on the PharmCAT website.
 
 [Back to Top](#pageTop)
 
@@ -571,17 +559,7 @@ python3 pharmcat_vcf_preprocessor.py \
 
 ### 7.4. Multiprocessing support for JSON-to-TSV
 
-You can also run the json2tsv python script in concurrent mode.
-
-```shell
-python3 src/json2tsv_pharmcat.py \
-  -i results/pharmcat_all/ \
-  -a </path/to/pharmcat/allele/definition/json/> \
-  -o results/ \
-  -c -cp 8
-```
-- `-c` = Enabling concurrent mode. 
-- `-cp` = the maximum number of processors to be used. Note that you always need to specify the number of processes. We will improve the feature in the future.
+The instruction has been moved to [the Multi-Sample Analysis webpage](https://pharmcat.org/using/Multi-Sample-Analysis/#extracting-pharmcat-json-content-into-tsv) on the PharmCAT website.
 
 
 <div id='stopDocker'/>
