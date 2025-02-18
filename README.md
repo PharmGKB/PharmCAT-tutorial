@@ -113,6 +113,10 @@ Steps:
    ![docker_tutorial_image](images/docker_tutorial_image.png)
    </details>
 
+> [!WARNING]
+> Due to a bug in Docker Desktop on ARM processors (including Apple Silicon) you will need to also run the following command in the Terminal before going to the next step  
+> `docker run -td pgkb/pharmcat-tutorial`
+
 5. Locate and click the `Containers` tab on the left. You will see a running instance of the PharmCAT tutorial. On the right, under the `Actions`, click ![docker_actions_menu](images/docker_actions_menu.png), and choose `Open in terminal`.
    <details>
          <summary>Click to see what it looks like in Docker Desktop. </summary>
